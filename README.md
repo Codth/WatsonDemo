@@ -2,4 +2,4 @@
 
 - Node.js 
 
-- Go to the folder, then run 'npm install' to install all the necessary packages. Then, run 'node index.js' to do the job.
+- Go to the folder, then run 'npm install' to install all the necessary packages. Then, run 'node index.js'. Done!
