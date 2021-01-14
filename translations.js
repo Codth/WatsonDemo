@@ -13,62 +13,27 @@ const languageTranslator = new LanguageTranslatorV3({
 
 
 var translation = 'Hello, this is a example of translating language with Watson.';
-console.log(translation)
 
-languageTranslator
-  .translate({
-    text: translation,
-    source: 'en',
-    target: 'es',
-  })
-  .then(response => {
-    console.log('English to Spanish')
-    translation = response.result.translations[0].translation;
-    console.log(translation);
+const language_set = ['en', 'es', 'zh-cn', 'ar', 'en']
 
-    languageTranslator
-    .translate({
-      text: translation,
-      source: 'es',
-      target: 'zh-cn',
-    })
-    .then(response => {
-      console.log('Spanish to Chinese')
-      translation = response.result.translations[0].translation;
-      console.log(translation);
+function perform_translate(i, txt, callback){
+    console.log(txt)
+    if(i<language_set.length-1){
+        callback(txt, i, language_set[i], language_set[i+1], perform_translate)
+    }
+}
 
-
-      languageTranslator
-      .translate({
-        text: translation,
-        source: 'zh-cn',
-        target: 'ar',
-      })
-      .then(response => {
-        console.log('Chinese to Arabic');
+function call_translate(txt, i, a, b, callback){
+    languageTranslator.translate({
+        text: txt,
+        source: a,
+        target: b,
+    }).then(response => {
+        console.log(a + ' to ' + b);
         translation = response.result.translations[0].translation;
-        console.log(translation);
-
-        languageTranslator
-        .translate({
-          text: translation,
-          source: 'ar',
-          target: 'en',
-        })
-        .then(response => {
-          console.log('Arabic to English');
-          translation = response.result.translations[0].translation;
-          console.log(translation);
-        })
-        .catch(error => console.error(error));
-      })
-      .catch(error => console.error(error));
+        callback(i+1, translation, call_translate)
     })
     .catch(error => console.error(error));
-  })
-  .catch(error => console.error(error));
+}
 
-
-
-
-
+perform_translate(0,translation,call_translate)
